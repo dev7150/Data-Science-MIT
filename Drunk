@@ -1,3 +1,5 @@
+import random
+
 class Location(object):
 
     def __init__(self, x, y):
@@ -60,12 +62,12 @@ class Drunk(object):
             return self.name
         return 'Anonymous'
 
-class UsusalDrunk(Drunk):
+class UsualDrunk(Drunk):
     def takestep(self):
         stepChoices = [(0.0, 1.0), (0.0, -1.0), (1.0, 0.0), (-1.0, 0.0)]
         return random.choice(stepChoices)
 
-    def walk(f, d, numSteps):
+def walk(f, d, numSteps):
         """Assumes: f a field, d a Drunk in f, and numSteps an int >= 0. Moves
            d numSteps times, and returns the difference between the final location
            and the location at the start of the walk."""
@@ -74,7 +76,7 @@ class UsusalDrunk(Drunk):
             f.moveDrunk(d)
             return start.distfrom(f.getLoc(d))
 
-    def simWalks(numSteps, numTrials, dClass):
+def simWalks(numSteps, numTrials, dClass):
         """Assumes numSteps an int>= 0, numTrials an int>0,
            dClass a subclass of Drunk
            simulates numTrials walks of numSteps steps each.
@@ -88,15 +90,17 @@ class UsusalDrunk(Drunk):
             distances.append(walk(f, Homer, numTrials))
         return distances
 
-    def drunkTest(walkLengths, numTrials, dClass):
+def drunkTest(walkLengths, numTrials, dClass):
         """Assumes walkLengths a sequence of ints >= 0
             numTrials an int>0, dClass a subclass of Drunk
             For each number of steps in walkLengths, run simWalks with
             numTrials walks and prints results"""
         for numSteps in walkLengths:
-            distances = simWalks(numSteos, numTrials, dClass)
+            distances = simWalks(numSteps, numTrials, dClass)
             print (dClass.__name__, 'random walk of', numSteps, 'steps')
             print ('Mean = ', sum(distances)/len(distances), \
-                  'CV = ', CV(distances))
+                  'CV = ') #CV(distances))
             print ('Max = ', max(distances), 'Min = ', min(distances))
+
+drunkTest((10, 100, 1000, 10000), 100, UsualDrunk)
     
